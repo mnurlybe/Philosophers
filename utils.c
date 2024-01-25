@@ -22,14 +22,14 @@ int	ft_atoi(const char *nptr)
 	return (num * sign);
 }
 
-long long get_start_timestamp(void)
+unsigned long get_time_ms(struct timeval start_time)
 {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
+	unsigned long	beginning;
+	unsigned long	end;
+    struct timeval now;
 
-long long get_current_timestamp(long long start_time)
-{
-    return get_start_timestamp() - start_time;
+    gettimeofday(&now, NULL);
+	beginning = (start_time.tv_sec * 1000) + (start_time.tv_usec / 1000);
+	end = (now.tv_sec * 1000) + (now.tv_usec / 1000);
+	return (end - beginning);
 }

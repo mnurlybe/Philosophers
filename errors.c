@@ -1,5 +1,8 @@
 #include "includes/philo.h"
 
+/**
+ * Check input errors
+*/
 int argc_error_check(int argc)
 {
     if (argc < 5 || argc > 6)

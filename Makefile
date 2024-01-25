@@ -7,14 +7,14 @@ SOURCES = 	main.c \
 			write_messages.c \
 			errors.c \
 			free.c \
-			# print.c \
+			print.c \
   
 OBJ_DIR = obj
 MY_HEADER = ./includes/
 
 CFLAGS = -Wall -Wextra -Werror
 LIBS = -lpthread
-# FSANITIZE = -g3 -fsanitize=address
+FSANITIZE = -g3 -fsanitize=address
 
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
