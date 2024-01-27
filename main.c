@@ -11,39 +11,42 @@
 
 int start_program(t_args *args)
 {
-    t_philosopher *philosophers;
     int i;
 
-    philosophers = args->philosophers;
+    swap_forks(args);
+    args->start_time = gettimeofday_long();
 
-    // get the start time of the simulation
-    gettimeofday(&args->start_time, NULL);
-
-    // create threads for each philosopher
     i = -1;
-    while (++i < args->num_of_philosophers)
+    while (++i < args->n_of_ph)
     {
-        philosophers[i].args = args;
-        pthread_create(&(philosophers[i].ph_th), NULL, &routine_basic, &philosophers[i]);
+        args->philosophers[i].ph_start_time = args->start_time;
+        pthread_create(&args->philosophers[i].th, NULL, 
+            &philo_routine, &args->philosophers[i]);
     }
-
-    // wait for all philosopher threads to finish
+    if (args->n_of_ph > 1)
+    {
+        pthread_create(&(args->stop_th), NULL, &stop_checker, args);
+    }
     i = -1;
-    while (++i < args->num_of_philosophers)
-        pthread_join(philosophers[i].ph_th, NULL);
-
+    while (++i < args->n_of_ph)
+        pthread_join(args->philosophers[i].th, NULL);
+    if (args->n_of_ph > 1)
+        pthread_join(args->stop_th, NULL);
     return 0;
 }
 
 int main(int argc, char *argv[])
 {
-    t_args args;
+    t_args *args;
 
-    if (argc_error_check(argc))
-        return 1;
-    s_args_init(&args, argc, argv);
-    printf_test(&args);
-    start_program(&args);
-    free_mutexes(&args);
+    if (argc_error_check(argc) || argv_error_check(argc, argv))
+        return (1);
+    args = init_args(argc, argv);
+    if (!args)
+        return (1);
+    printf_test(args);
+    start_program(args);
+    free_mutexes(args);
+    free(args);
     return 0;
 }

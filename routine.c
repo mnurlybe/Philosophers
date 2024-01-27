@@ -69,13 +69,11 @@ void    *routine(void *arg)
  * base routine without loop
 */
 
-void    *routine_basic(void *arg)
+void    *routine_basic(void *args)
 {
-    t_args  *args;
     t_philosopher *philo;
 
-    philo = (t_philosopher *)arg;
-    args = philo->args;
+    philo = (t_philosopher *)args;
 
     usleep(1000000);
 

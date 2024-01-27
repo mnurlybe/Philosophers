@@ -1,13 +1,14 @@
 NAME = philo
 
 SOURCES = 	main.c \
-			utils.c \
-			init_structs.c \
-			routine.c \
-			write_messages.c \
 			errors.c \
-			free.c \
+			init_structs.c \
 			print.c \
+			free.c \
+			utils.c \
+			routine_new.c \
+			# routine.c \
+			# write_messages.c \
   
 OBJ_DIR = obj
 MY_HEADER = ./includes/
