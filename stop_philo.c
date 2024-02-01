@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:42:14 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/01/27 21:03:25 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:59:42 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 int is_dead(t_philosopher *philo)
 {
+    unsigned long time;
     
+    time = gettimeofday_long();
+    if ((time - philo->last_meal) >= philo->args->time_to_die)
+        return (TRUE);
+    return (FALSE);
 }
 
 void    *stop_checker(void *arg)

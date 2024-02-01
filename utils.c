@@ -32,17 +32,13 @@ unsigned long gettimeofday_long(void)
 	return (ms);
 }
 
-// unsigned long get_time_ms(struct timeval start_time)
-// {
-// 	unsigned long	beginning;
-// 	unsigned long	end;
-//     struct timeval now;
+unsigned long get_time_ms(unsigned long start_time)
+{
+    unsigned long	now;
 
-//     gettimeofday(&now, NULL);
-// 	beginning = (start_time.tv_sec * 1000) + (start_time.tv_usec / 1000);
-// 	end = (now.tv_sec * 1000) + (now.tv_usec / 1000);
-// 	return (end - beginning);
-// }
+    now = gettimeofday_long();
+	return (now - start_time);
+}
 
 void    swap_forks(t_args *args)
 {

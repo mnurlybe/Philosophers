@@ -6,9 +6,9 @@ SOURCES = 	main.c \
 			print.c \
 			free.c \
 			utils.c \
-			routine_new.c \
-			# routine.c \
-			# write_messages.c \
+			head_routine.c \
+			stop_philo.c \
+			write_messages.c \
   
 OBJ_DIR = obj
 MY_HEADER = ./includes/

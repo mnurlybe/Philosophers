@@ -16,8 +16,7 @@ typedef enum e_state
     SLEEPING,
     THINKING,
     DEAD, 
-    LEFT, 
-    RIGHT
+    FORK
 }   t_state;
 
 typedef struct s_philosopher
@@ -66,7 +65,7 @@ void    free_mutexes(t_args *args);
 // utils.c
 int     ft_atoi(const char *nptr);
 unsigned long gettimeofday_long(void);
-unsigned long get_time_ms(struct timeval start_time);
+unsigned long get_time_ms(unsigned long start_time);
 void    swap_forks(t_args *args);
 
 //routine_new.c
@@ -75,13 +74,8 @@ void *philo_routine(void *args);
 //stop_philo.c
 void    *stop_checker(void *args);
 
-// routine.c
-// void    *routine(void *arg);
-// void    *routine_basic(void *arg); //testing purpose, to be removed before the final submission
-
 // write_messages.c
-void    write_message_estd(t_args *args, t_philosopher *philo, t_state state);
-void    write_message_forks(t_args *args, t_philosopher *philo, t_state state);
-
+void    write_message_estd(t_philosopher *philo, t_state state);
+void    write_message_forks(t_philosopher *philo);
 
 #endif
