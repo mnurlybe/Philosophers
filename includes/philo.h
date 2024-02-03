@@ -64,7 +64,11 @@ void    free_mutexes(t_args *args);
 
 // utils.c
 int     ft_atoi(const char *nptr);
+/**
+ * get current time
+*/
 unsigned long gettimeofday_long(void);
+
 unsigned long get_time_ms(unsigned long start_time);
 void    swap_forks(t_args *args);
 

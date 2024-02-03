@@ -13,13 +13,14 @@ int start_program(t_args *args)
 {
     int i;
 
-    swap_forks(args);
+    // swap_forks(args);
     args->start_time = gettimeofday_long();
 
     i = -1;
     while (++i < args->n_of_ph)
     {
         args->philosophers[i].ph_start_time = args->start_time;
+        args->philosophers[i].last_meal = args->start_time;
         pthread_create(&args->philosophers[i].th, NULL, 
             &philo_routine, &args->philosophers[i]);
     }

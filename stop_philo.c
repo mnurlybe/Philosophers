@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:42:14 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/01 19:59:42 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:03:25 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void    *stop_checker(void *arg)
             {
                 pthread_mutex_lock(&args->end_mutex);
                 args->end = TRUE;
+                write_message_estd(&(args->philosophers[i]), DEAD);
                 pthread_mutex_unlock(&args->end_mutex);
                 pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
                 return (NULL);
