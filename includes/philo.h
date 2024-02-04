@@ -77,9 +77,13 @@ void *philo_routine(void *args);
 
 //stop_philo.c
 void    *stop_checker(void *args);
+int is_dead(t_philosopher *philo);
 
 // write_messages.c
 void    write_message_estd(t_philosopher *philo, t_state state);
 void    write_message_forks(t_philosopher *philo);
+
+//philo_utils.c
+void    update_last_meal(t_philosopher *philo);
 
 #endif

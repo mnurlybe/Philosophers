@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:42:14 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/03 15:03:25 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:47:19 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,22 @@ void    *stop_checker(void *arg)
     args->end = FALSE;
     pthread_mutex_unlock(&args->end_mutex);
     int i;
-    while (1)
-    {
+    while (args->end == FALSE)
+    {   
         i = -1;
         while (++i < args->n_of_ph)
         {
-            pthread_mutex_lock(&args->philosophers[i].ph_act_mutex);
+            // pthread_mutex_lock(&args->philosophers[i].ph_act_mutex);
             if (is_dead(&(args->philosophers[i])))
             {
                 pthread_mutex_lock(&args->end_mutex);
                 args->end = TRUE;
                 write_message_estd(&(args->philosophers[i]), DEAD);
                 pthread_mutex_unlock(&args->end_mutex);
-                pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
+                // pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
                 return (NULL);
             }
-            pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
+            // pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
         }
         usleep(1000);
     }

@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:16:38 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/03 16:07:58 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:01:54 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,35 +43,65 @@ int action_in_process(t_args *args, unsigned int time_to_act)
     {
         if (get_end_status(args) == TRUE)
             return (FALSE);
-        usleep(50);
+        usleep(500);
     }
     return (TRUE);
 }
 
-int eat_sleep_think(t_philosopher *philo)
+int sleep_think(t_philosopher *philo, unsigned int time)
 {
-    if (get_end_status(philo->args))
+    if (is_dead(philo) || get_end_status(philo->args))
         return (FALSE);
-    pthread_mutex_lock(&philo->args->forks[philo->right_fork]);
-    write_message_forks(philo);
-    pthread_mutex_lock(&philo->args->forks[philo->left_fork]);
-    write_message_forks(philo);
-    write_message_estd(philo, EATING);
-    pthread_mutex_lock(&philo->ph_act_mutex);
-    philo->last_meal = gettimeofday_long();
-    pthread_mutex_unlock(&philo->ph_act_mutex);
-    if (!action_in_process(philo->args, philo->args->time_to_eat))
-    {
-        pthread_mutex_unlock(&philo->args->forks[philo->right_fork]);
-        pthread_mutex_unlock(&philo->args->forks[philo->left_fork]);   
-        return (FALSE);
-    }
-    pthread_mutex_unlock(&philo->args->forks[philo->right_fork]);
-    pthread_mutex_unlock(&philo->args->forks[philo->left_fork]);
     write_message_estd(philo, SLEEPING);
-    if (!action_in_process(philo->args, philo->args->time_to_sleep))
+    if (action_in_process(philo->args, time) == FALSE)
+        return (FALSE);
+    if (is_dead(philo) || get_end_status(philo->args))
         return (FALSE);
     write_message_estd(philo, THINKING);
+    return (TRUE);
+}
+
+void put_forks(t_philosopher *philo)
+{
+    pthread_mutex_unlock(&philo->args->forks[philo->right_fork]);
+    pthread_mutex_unlock(&philo->args->forks[philo->left_fork]);  
+}
+
+
+int take_forks(t_philosopher *philo)
+{   
+    if (is_dead(philo) || get_end_status(philo->args))
+        return (FALSE);
+    pthread_mutex_lock(&philo->args->forks[philo->right_fork]);
+    if (is_dead(philo) || get_end_status(philo->args))
+    {
+        pthread_mutex_unlock(&philo->args->forks[philo->right_fork]);
+        return (FALSE);
+    }
+    write_message_forks(philo);
+    pthread_mutex_lock(&philo->args->forks[philo->left_fork]);
+    if (is_dead(philo) || get_end_status(philo->args))
+    {
+        pthread_mutex_unlock(&philo->args->forks[philo->right_fork]);
+        pthread_mutex_unlock(&philo->args->forks[philo->left_fork]); 
+        return (FALSE);
+    }
+    write_message_forks(philo);
+    return (TRUE);
+}
+
+int eat(t_philosopher *philo)
+{
+    if (take_forks(philo) == FALSE)
+        return (FALSE);
+    write_message_estd(philo, EATING);
+    update_last_meal(philo);
+    if (action_in_process(philo->args, philo->args->time_to_eat) == FALSE)
+    {
+        put_forks(philo);   
+        return (FALSE);
+    }
+    put_forks(philo);
     return (TRUE);
 }
 
@@ -86,13 +116,17 @@ void *philo_routine(void *arg)
         return (only_one_philo(philo));
     else
     {
+        update_last_meal(philo);
         if (philo->id % 2)
-            usleep(1000);
+            sleep_think(philo, philo->args->time_to_eat / 2);       
         while (get_end_status(philo->args) == FALSE)
         {
-            if (eat_sleep_think(philo) == FALSE)
-                break;
-            // printf("End status %d\n", philo->args->end);
+            if (eat(philo) == FALSE)
+                return (NULL);
+            if (is_dead(philo) || get_end_status(philo->args))
+                return (NULL);
+            if (sleep_think(philo, philo->args->time_to_sleep) == FALSE)
+                return (NULL);
         }   
     }
     return (NULL);

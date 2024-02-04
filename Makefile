@@ -9,6 +9,7 @@ SOURCES = 	main.c \
 			head_routine.c \
 			stop_philo.c \
 			write_messages.c \
+			philo_utils.c \
   
 OBJ_DIR = obj
 MY_HEADER = ./includes/
