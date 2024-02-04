@@ -6,70 +6,74 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:42:14 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/04 17:11:11 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:08:36 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
 
-int is_dead(t_philosopher *philo)
+int	is_dead(t_philosopher *philo)
 {
-    unsigned long time;
-    
-    time = gettimeofday_long();
-    if ((time - philo->last_meal) >= philo->args->time_to_die)
-        return (TRUE);
-    return (FALSE);
+	unsigned long	time;
+
+	time = gettimeofday_long();
+	if ((time - philo->last_meal) >= philo->args->time_to_die)
+		return (TRUE);
+	return (FALSE);
 }
 
-int all_full(t_args *args)
+int	all_full(t_args *args)
 {
-    int counter = 0;
-    int i = -1;
-    while (++i < args->n_of_ph)
-    {
-        if (args->philosophers[i].n_eaten >= args->n_meals)
-            counter++;
-    }
-    if (counter == i)
-        return (TRUE);
-    return (FALSE);
+	int	counter;
+	int	i;
+
+	counter = 0;
+	i = -1;
+	while (++i < args->n_of_ph)
+	{
+		if (args->philosophers[i].n_eaten >= args->n_meals)
+			counter++;
+	}
+	if (counter == i)
+		return (TRUE);
+	return (FALSE);
 }
 
-void    *stop_checker(void *arg)
+void	change_end_status(t_args *args, int status)
 {
-    t_args  *args;
-    args = (t_args*)arg;
-    
-    pthread_mutex_lock(&args->end_mutex);
-    args->end = FALSE;
-    pthread_mutex_unlock(&args->end_mutex);
-    int i;
-    while (args->end == FALSE)
-    {   
-        i = -1;
-        while (++i < args->n_of_ph)
-        {
-            // pthread_mutex_lock(&args->philosophers[i].ph_act_mutex);
-            if (args->n_meals != -1 && all_full(args))
-            {
-                pthread_mutex_lock(&args->end_mutex);
-                args->end = TRUE;
-                pthread_mutex_unlock(&args->end_mutex);
-                return (NULL);
-            }
-            if (is_dead(&(args->philosophers[i])))
-            {
-                pthread_mutex_lock(&args->end_mutex);
-                args->end = TRUE;
-                write_message_estd(&(args->philosophers[i]), DEAD);
-                pthread_mutex_unlock(&args->end_mutex);
-                // pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
-                return (NULL);
-            }
-            // pthread_mutex_unlock(&args->philosophers[i].ph_act_mutex);
-        }
-        usleep(1000);
-    }
-    return (NULL);
+	pthread_mutex_lock(&args->end_mutex);
+	if (status == 0)
+		args->end = FALSE;
+	else if (status == 1)
+		args->end = TRUE;
+	pthread_mutex_unlock(&args->end_mutex);
+}
+
+void	*stop_checker(void *arg)
+{
+	t_args	*args;
+	int		i;
+
+	args = (t_args *)arg;
+	change_end_status(args, FALSE);
+	while (args->end == FALSE)
+	{
+		i = -1;
+		while (++i < args->n_of_ph)
+		{
+			if (args->n_meals != -1 && all_full(args))
+			{
+				change_end_status(args, TRUE);
+				return (NULL);
+			}
+			if (is_dead(&(args->philosophers[i])))
+			{
+				change_end_status(args, TRUE);
+				write_message_estd(&(args->philosophers[i]), DEAD);
+				return (NULL);
+			}
+		}
+		usleep(1000);
+	}
+	return (NULL);
 }

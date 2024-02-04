@@ -28,7 +28,8 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	gcc $(CFLAGS) -I $(MY_HEADER) -c $< -o $@
 
 $(NAME): $(OBJECTS)
-	cc $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBS) 
+	cc $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBS)
+
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

@@ -27,12 +27,6 @@ Synchronization #1 general condition: even philosopher start from the left fork,
 4. time_to_die argument has specifics. There are certain conditions for odd and even number of philosophers. There is a minimum value for time_to_die needs to be calculated based on the time_to_sleep and time_to_eat values. Otherwise, if it is lower than the minimu requirement some philosopher will die right away. But this could be a way to test the printing time of the timestamp_in_ms X died message.
 5. error handling for each thread and mutex functions.
 6. valgrind --tool=helgrind --> checks for data races; 
-7. meal_mutex is needed to avoid race condition on last_meal_time -- this is how I understood it. 
-
-Plan for tomorrow: 
-
-change the structures: args should contain philosophers array.
-
 
 https://nafuka11.github.io/philosophers-visualizer/
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/04 18:02:58 by mnurlybe          #+#    #+#             */
+/*   Updated: 2024/02/04 18:02:59 by mnurlybe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/philo.h"
 
 int	ft_atoi(const char *nptr)
@@ -22,7 +34,7 @@ int	ft_atoi(const char *nptr)
 	return (num * sign);
 }
 
-unsigned long gettimeofday_long(void)
+unsigned long	gettimeofday_long(void)
 {
 	struct timeval	tv;
 	unsigned long	ms;
@@ -32,11 +44,10 @@ unsigned long gettimeofday_long(void)
 	return (ms);
 }
 
-unsigned long get_time_ms(unsigned long start_time)
+unsigned long	get_time_ms(unsigned long start_time)
 {
-    unsigned long	now;
+	unsigned long	now;
 
-    now = gettimeofday_long();
+	now = gettimeofday_long();
 	return (now - start_time);
 }
-
