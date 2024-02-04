@@ -55,29 +55,15 @@ int argv_error_check(int argc, char **argv);
 // init_structs.c
 t_args    *init_args(int argc, char **argv);
 
-// print.c - TESTING purpose --> to be removed before the final submission
-void printf_test(t_args *args);
-void print_philo(t_philosopher *philo);
-
-//  free.c
-void    free_mutexes(t_args *args);
-
-// utils.c
-int     ft_atoi(const char *nptr);
-/**
- * get current time
-*/
-unsigned long gettimeofday_long(void);
-
-unsigned long get_time_ms(unsigned long start_time);
-void    swap_forks(t_args *args);
-
 //routine_new.c
 void *philo_routine(void *args);
 
 //stop_philo.c
 void    *stop_checker(void *args);
 int is_dead(t_philosopher *philo);
+
+//  free.c
+void    free_mutexes(t_args *args);
 
 // write_messages.c
 void    write_message_estd(t_philosopher *philo, t_state state);
@@ -86,4 +72,12 @@ void    write_message_forks(t_philosopher *philo);
 //philo_utils.c
 void    update_last_meal(t_philosopher *philo);
 
+// utils.c
+int     ft_atoi(const char *nptr);
+unsigned long gettimeofday_long(void);
+unsigned long get_time_ms(unsigned long start_time);
+
+// print.c - TESTING purpose --> to be removed before the final submission
+void printf_test(t_args *args);
+void print_philo(t_philosopher *philo);
 #endif

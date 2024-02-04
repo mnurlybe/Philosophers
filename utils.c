@@ -40,19 +40,3 @@ unsigned long get_time_ms(unsigned long start_time)
 	return (now - start_time);
 }
 
-void    swap_forks(t_args *args)
-{
-    int i;
-    unsigned int tmp;
-
-    i = -1;
-    while (++i < args->n_of_ph)
-    {
-        if (args->philosophers[i].id % 2 == 0)
-        {
-            tmp = args->philosophers[i].left_fork;
-            args->philosophers[i].left_fork = args->philosophers[i].right_fork;
-            args->philosophers[i].right_fork = tmp;
-        }
-    }
-}

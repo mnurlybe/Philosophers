@@ -13,7 +13,6 @@ int start_program(t_args *args)
 {
     int i;
 
-    // swap_forks(args);
     args->start_time = gettimeofday_long();
 
     i = -1;
