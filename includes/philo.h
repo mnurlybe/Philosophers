@@ -25,7 +25,7 @@ typedef struct s_philosopher
     int             id;
     unsigned int    left_fork;
     unsigned int    right_fork;
-    unsigned int    n_eaten;
+    int             n_eaten;
     unsigned long   ph_start_time;
     unsigned long   last_meal;
     struct s_args   *args;

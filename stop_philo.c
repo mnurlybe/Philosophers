@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 20:42:14 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/04 16:31:21 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:11:11 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ int is_dead(t_philosopher *philo)
     
     time = gettimeofday_long();
     if ((time - philo->last_meal) >= philo->args->time_to_die)
+        return (TRUE);
+    return (FALSE);
+}
+
+int all_full(t_args *args)
+{
+    int counter = 0;
+    int i = -1;
+    while (++i < args->n_of_ph)
+    {
+        if (args->philosophers[i].n_eaten >= args->n_meals)
+            counter++;
+    }
+    if (counter == i)
         return (TRUE);
     return (FALSE);
 }
@@ -37,6 +51,13 @@ void    *stop_checker(void *arg)
         while (++i < args->n_of_ph)
         {
             // pthread_mutex_lock(&args->philosophers[i].ph_act_mutex);
+            if (args->n_meals != -1 && all_full(args))
+            {
+                pthread_mutex_lock(&args->end_mutex);
+                args->end = TRUE;
+                pthread_mutex_unlock(&args->end_mutex);
+                return (NULL);
+            }
             if (is_dead(&(args->philosophers[i])))
             {
                 pthread_mutex_lock(&args->end_mutex);

@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     if (!args)
         return (1);
     // printf_test(args);
-    if (args->n_meals != 0 || args->time_to_die != 0) // if n_of_meals == 0, then no one should eat at all, and the program doesn't start; 
+    if (args->n_meals != 0) // if n_of_meals == 0, then no one should eat at all, and the program doesn't start; 
         start_program(args);
     free_mutexes(args);
     free(args);

@@ -6,7 +6,7 @@
 /*   By: mnurlybe <mnurlybe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 18:16:38 by mnurlybe          #+#    #+#             */
-/*   Updated: 2024/02/04 16:29:50 by mnurlybe         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:08:31 by mnurlybe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int eat(t_philosopher *philo)
         put_forks(philo);   
         return (FALSE);
     }
+    if (philo->args->n_meals != -1)
+        philo->n_eaten++;
     put_forks(philo);
     return (TRUE);
 }
